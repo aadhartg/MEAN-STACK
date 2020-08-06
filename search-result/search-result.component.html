@@ -1,0 +1,637 @@
+<app-layout1-header></app-layout1-header>
+<div class="search-result">
+  <div class="sort-wrapper row">
+    <div *ngIf="(eventTotalPages==0 && artistTotalPages==0 && venueTotalPages==0 && locationTotalPages==0)" class="col-xs-12 custom-padding">
+      <div class="alert alert-danger col-xs-10 col-xs-offset-1 no-result-found">Search is not found.
+        <br />Please search again</div>
+    </div>
+    <div class="col-xs-12">
+      <label class="search-result-text">
+        <a (click)="getAllEvents(0)" *ngIf="eventTotalPages>0 && isResult" class="search-location">{{eventTotalPages}} Events </a>
+        <span *ngIf="!showMapView && artistTotalPages>0 && isResult && eventTotalPages>0">, </span>
+        <a (click)="getAllArtists(0)" *ngIf="!showMapView && artistTotalPages>0 && isResult" class="search-location">{{artistTotalPages}} Artist</a>
+        <span *ngIf="!showMapView && venueTotalPages>0 && isResult && artistTotalPages>0">, </span>
+        <a (click)="getAllVenues(0)" *ngIf="!showMapView && venueTotalPages>0 && isResult" class="search-location">{{venueTotalPages}} Venues</a>
+        <span *ngIf="!showMapView && eventTotalPages>0 && artistTotalPages>0 && venueTotalPages>0 && locationTotalPages>0">and</span>
+        <a (click)="getAllLocations(0)" *ngIf="!showMapView && locationTotalPages>0 && isResult" class="search-location">
+          {{locationTotalPages}} Locations</a>
+        <span *ngIf="body.searchKeyWord && (eventList.length>0 || venueList.length>0 || locationList.length>0 || artistList.length>0)">for "
+          <span class="highlight">{{body.searchKeyWord}}</span>"
+        </span>
+      </label>
+      <div>
+        <span *ngIf="(body.city || body.fromDate || body.categories) && isResult">Showing Results for: </span>
+        <span *ngIf="body.city && isResult">
+          <b>city:</b>
+          <span class="highlight">{{body.city}}</span>
+        </span>
+        <span *ngIf="body.fromDate && isResult">
+          <b>Date:</b>
+          <span class="highlight">{{body.fromDate}}</span>
+        </span>
+        <span *ngIf="body.categories && body.categories.length">
+          <span class="highlight">
+            <b>Genres:</b>
+          </span>
+          <ng-template ngFor let-categoryObj let-index="index" [ngForOf]="body.categories">
+            <span clspanss="highlight">{{categoryObj}}</span><span *ngIf="index !== (body.categories.length-1)">, </span>
+          </ng-template>
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-7 sort-section">
+      <li *ngIf="totalPages>0 && isResult && showPagination" class="sort_dropdown">
+        <a ngClass="dropdown">
+          <a href="#" ngClass="dropdown-toggle" data-toggle="dropdown">
+            <label class="sort-label">SORT BY</label>
+            <span>
+              <input readonly id="city" [(ngModel)]="sortByText" type="text" class="sort-input form-control search-box-text" name="sort-input"
+                placeholder="{{sortByText}}" />
+            </span>
+            <span *ngIf="body['type']=='events'" ngClass="glyphicon select-menu-down-arrow glyphicon-menu-down"></span>
+            <span *ngIf="body['type']!='events'" ngClass="glyphicon select-menu-down-arrow glyphicon-menu-down dropdown-arrow"></span>
+          </a>
+          <ul ngClass="nav-profile-dropdown-menu dropdown-menu">
+            <li *ngIf="body['type']=='events'" id="date" (click)="sortBy('TIME','time')" class="day-item">TIME</li>
+            <li *ngIf="body['type']=='events'" id="days" (click)="sortBy('TRENDING','trending')" class="day-item">TRENDING</li>
+            <li *ngIf="body['type']=='venues'" id="days" (click)="sortBy('TRENDING','fan')" class="day-item">TRENDING</li>
+            <li *ngIf="body['type']=='artists'" id="days" (click)="sortBy('TRENDING','fan')" class="day-item">TRENDING</li>
+            <li id="week" (click)="sortBy('NAME','name')" class="day-item">NAME</li>
+          </ul>
+        </a>
+        <a *ngIf="body['type']=='events'" class="grid icon-grid-map" (click)="switchMapView()">
+          <span class="icon-grid"></span>
+        </a>
+        <a *ngIf="body['type']=='events'" class="map icon-grid-map" (click)="getMapData()">
+          <span class="icon-map"></span>
+        </a>
+      </li>
+    </div>
+  </div>
+
+  <div class="row result-wrapper">
+    <div *ngIf="!showMapView">
+      <!-- Events result -->
+      <div *ngIf="showEvents" id="eventsWrapper">
+        <div *ngIf="eventTotalPages>0" class="heading">{{eventTotalPages}} Events
+          <!-- <a *ngIf="totalRecords.eventTotalPages>4" (click)="getAllEvents()" class="show-all-text">Show all</a> -->
+        </div>
+        <div class="card-row">
+          <ng-template ngFor let-event let-index="index" [ngForOf]="eventList">
+            <div class="item col-lg-3 col-md-3 col-xs-6 col-sm-3 custom-padding">
+              <app-event-card data-backdrop="false" data-toggle="modal" (messageEvent)="receiveMessage($event)" [event]="event._source"></app-event-card>
+            </div>
+          </ng-template> 
+          <div class="extra-card-sec">
+            <button _ngcontent-c1="" class="view-more-btn" *ngIf="showEventMoreButton" (click)="getAllEvents(1)">View More</button>
+          </div>
+
+        </div>
+        
+     
+    <div class="modal imagePopUp fade" id="searchEvent" tabindex="-1" role="dialog" aria-labelledby="eventModalTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <app-alert [alertType]="alertType" *ngIf="modalData.resMsg" [message]="modalData.resMsg"></app-alert>
+          
+          <div class="modal-content">
+            <div class="card-modal-header">
+              <div class="row card-header-row">
+                <button type="button" style="float: left;" class="close1" data-dismiss="modal">&times;</button>
+
+                <!-- categories -->
+                <span *ngIf="modalData && modalData.categories">
+                  <span *ngIf="modalData.categories && modalData.categories.length<4 && modalData.categories.length>0">
+                    <ng-template ngFor let-index="index" let-category [ngForOf]="modalData.categories">
+                      <span *ngIf="index<3" class="card-header-status">
+                        <label *ngIf="category.name != 'Unmarked Genres' && (category.name != 'Theatre-Performing Arts' && category.name !='Theater/Performing Arts')">{{category.name}}</label>
+                        <label *ngIf="category.name == 'Theatre-Performing Arts' || category.name =='Theater/Performing Arts'">Performing Arts</label>
+                        <label *ngIf="category.name == 'Unmarked Genres'">Unmarked</label>
+                      </span>
+                    </ng-template>
+                  </span>
+                  <span *ngIf="modalData.categories && modalData.categories.length>=4" class="card-header-status">
+                    <label>
+                      {{modalData.categories.length}} More Genres.
+                    </label>
+                  </span>
+                  <span class="card-header share">
+                    <div class="a2a_kit a2a_kit_size_32 a2a_default_style" [attr.data-a2a-url]="modalData.url" [attr.data-a2a-title]="modalData.name">
+                      <a class="a2a_dd media-icons share" id="addtoany">
+                        <label><img src="../assets/images/share.svg"></label>
+                      </a>
+                    </div>
+                  </span>
+                  <span (click)="addFansCount('event',modalData._id)" class="card-header">
+                    <span *ngIf="modalData.total_fan_count>0">{{modalData.total_fan_count}}</span>
+                    <span ngClass="icon-fan"></span>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="modal-card-body">
+              <div class="card-body row">
+                <img src='{{modalData.eventImageUrl}}'>
+              </div>
+
+              <div class="modal-card-info">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 no-padding">
+                  <div class="">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                      <div class="event-name" *ngIf="modalData.name" [innerHTML]="modalData.name"></div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                      <p class="modal-time_place">
+                        <span ngClass="icon icon-calendar-2"></span>
+                        <span class="time-text"> {{modalData.eventStartTimeDate}}</span>
+                        <span (click)="showAddToCalOptions=!showAddToCalOptions" class="add-link cursor-pointer">Add</span>
+                        <div *ngIf="showAddToCalOptions" class="add-to-cal-options">
+                          <div class="close-add-to-cal-options">
+                            <button  (click)="closeAddToCalOptions()" type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <a *ngIf="modalData.google_url" (click)="closeAddToCalOptions()"href={{modalData.google_url}} target="_blank">Google |</a>
+                          <a *ngIf="modalData.yahoo_url" (click)="closeAddToCalOptions()"href={{modalData.yahoo_url}} target="_blank">Yahoo |</a>
+                          <a id="outlook_ics" (click)="ics_gen1(modalData)" download="event.ics"> Outlook |</a>
+                          <a id="outlook_ics1" (click)="ics_gen1(modalData)" download="event.ics"> iCalendar </a>
+                        </div>
+                        <p *ngIf="modalData.venue" class="modal-time_place">
+                          <span ngClass="icon icon-location"></span>
+                          <span class="time-text">{{modalData.venue.name}}, {{modalData.venue.city}}</span>
+                          <span *ngIf="!modalData.venue.map_link" class="add-link">Direction</span>
+                          <span *ngIf="modalData.venue.map_link" class="add-link">
+                            <a target="_blank" class="add-link" href="{{modalData.venue.map_link}}">Direction</a>
+                          </span>
+                    </div>
+                  </div>
+
+                <div class="">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="photo_description no-padding pc_view"><span *ngIf="modalData.description">{{modalData.description}}</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
+                <div class="col-md-12 no-padding">
+                   <div class="btn-custom-padding">
+                    <button [ngClass]="modalData.promotedEvent ? 'btn-full' : ''" [routerLink]="['/event/',modalData.urlString,modalData.urlString1,modalData.urlString2, modalData.urlString3]" data-dismiss="modal" class="btn button--primary promote">More Info</button>
+                  </div>
+                  <div class="btn-custom-padding" style="width:100%; max-width:100%;">
+                    <button *ngIf="!modalData.promotedEvent" (click) = "openPromoteEventForm(modalData.urlString, modalData.urlString1,modalData.urlString2, modalData.urlString3)" class="btn button--primary btn-promote">Promote</button>
+                  </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                  <div class="btn-custom-padding" style="width:100%; max-width:100%;">
+                    <span *ngIf="modalData">
+                      <div class="ticket--dropdown btn-group">
+                         <ng-template ngFor let-schIndex="index" let-scheduleObj [ngForOf]="modalData.event_schedule">
+                          <span *ngIf="schIndex=='0'">
+                            <ng-template ngFor let-tlinkIndex="index" let-ticketlinkObj [ngForOf]="scheduleObj.finalTktLinks">
+                              <a *ngIf="tlinkIndex=='0' && ticketlinkObj" ngClass="btn btn-default dropdown-toggle" target="_blank" href="{{ticketlinkObj}}" (click)="progressEvent(ticketlinkObj, modalData._id)">TICKET {{modalData.ticketProvider}}</a>
+                            </ng-template>
+                          </span>
+                        </ng-template>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      </div>
+      <div class="clearfix"></div>
+
+      <!-- Artists result -->
+      <div *ngIf="showArtists && artistList.length>0" id="artistsWrapper">
+        <div *ngIf="artistTotalPages>0" class="heading">{{artistTotalPages}} Artists
+        </div>
+        <div class="card-row">
+          <ng-template ngFor let-artist let-index="index" [ngForOf]="artistList">
+            <div class="item col-lg-3 col-md-3 col-xs-6 col-sm-3 custom-padding">
+              <app-artist-card (click)="openArtistModal(artist._source,'searchArtist')" [artist]="artist._source"></app-artist-card>
+            </div>
+          </ng-template>
+          <div class="extra-card-sec">
+            <button _ngcontent-c1="" class="view-more-btn" *ngIf="showArtistMoreButton" (click)="getAllArtists(1)">View More</button>
+          </div>
+
+        </div>
+        
+        
+    <div class="modal imagePopUp fade" id="searchArtist" tabindex="-1" role="dialog" aria-labelledby="eventModalTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <app-alert [alertType]="alertType" *ngIf="modalData.resMsg" [message]="modalData.resMsg"></app-alert>
+          <div class="modal-content">
+            <div class="card-modal-header">
+              <div class="row card-header-row">
+                <button type="button" style="float: left;" class="close1" data-dismiss="modal">&times;</button>
+
+                <!-- categories -->
+                <span *ngIf="modalData && modalData.categories">
+                  <span *ngIf="modalData.categories && modalData.categories.length<4 && modalData.categories.length>0">
+                    <ng-template ngFor let-index="index" let-category [ngForOf]="modalData.categories">
+                      <span *ngIf="index<3" class="card-header-status">
+                        <label *ngIf="category.name != 'Unmarked Genres' && (category.name != 'Theatre-Performing Arts' && category.name !='Theater/Performing Arts')">{{category.name}}</label>
+                        <label *ngIf="category.name == 'Theatre-Performing Arts' || category.name =='Theater/Performing Arts'">Performing Arts</label>
+                        <label *ngIf="category.name == 'Unmarked Genres'">Unmarked</label>
+                      </span>
+                    </ng-template>
+                  </span>
+                  <span *ngIf="modalData.categories && modalData.categories.length>=4" class="card-header-status">
+                    <label>
+                      {{modalData.categories.length}} More Genres.
+                    </label>
+                  </span>
+                  <span class="card-header share">
+                    <div class="a2a_kit a2a_kit_size_32 a2a_default_style" [attr.data-a2a-url]="modalData.url" [attr.data-a2a-title]="modalData.name">
+                      <a class="a2a_dd media-icons share" id="addtoany">
+                        <label><img src="../assets/images/share.svg"></label>
+                      </a>
+                    </div>
+                  </span>
+                  <span (click)="addFansCount('event',modalData._id)" class="card-header">
+                    <span *ngIf="modalData.total_fan_count>0">{{modalData.total_fan_count}}</span>
+                    <span ngClass="icon-fan"></span>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="modal-card-body">
+              <div class="card-body row">
+                <img src='{{modalData.artistImageUrl}}'>
+              </div>
+
+              <div class="modal-card-info">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 no-padding">
+                  <div class="">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                      <div class="event-name" *ngIf="modalData.name" [innerHTML]="modalData.name"></div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                      <p class="modal-time_place">
+                        <div *ngIf="modalData && modalData.social_media" class="card-footer social-icns-othr">
+                      <ng-template ngFor let-index="index" let-socialmedia [ngForOf]="modalData.social_media">
+                        <a *ngIf="socialmedia.media_type=='twitter' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons">
+                          <span ngClass="icon icon-twitter"></span>
+                        </a>
+                        <a *ngIf="socialmedia.media_type=='facebook' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons">
+                          <span ngClass="icon icon-facebook"></span>
+                        </a>
+                        <a *ngIf="socialmedia.media_type=='tumblr' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons">
+                          <span ngClass="icon icon-tumblr"></span>
+                        </a>
+                        <a *ngIf="socialmedia.media_type=='youtube' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons divider">
+                          <span ngClass="icon icon-youtube"></span>
+                        </a>
+                      </ng-template>
+                    </div>                        
+                    </div>
+                  </div>
+
+                <div class="">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <div class="photo_description no-padding pc_view"><span *ngIf="modalData.description">{{modalData.description}}</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
+                <div class="col-md-12 no-padding mb-hide">
+                    <div class="btn-custom-padding"></div>
+                  <div class="btn-custom-padding">
+                  </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                  <div class="btn-custom-padding">                    
+                  </div>
+                  <div class="btn-custom-padding">
+                  <button [routerLink]="['/artist/',artistProfileUrl]" data-dismiss="modal" class="btn button--primary promote">More Info</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+      <div class="clearfix"></div>
+
+      <!-- Venues result -->
+      <div *ngIf="showVenues && venueList.length>0" id="venuesWrapper">
+        <div *ngIf="venueTotalPages>0" class="heading">{{venueTotalPages}} Venues
+        </div>
+        <div class="card-row">
+          <ng-template ngFor let-venue let-index="index" [ngForOf]="venueList">
+            <div class="item col-lg-3 col-md-3 col-xs-6 col-sm-3 custom-padding">
+              <app-venue-card (click)="openVenueModal(venue._source,'searchVenue')" [venue]="venue._source"></app-venue-card>
+            </div>
+          </ng-template>
+          <div class="extra-card-sec">
+            <button _ngcontent-c1="" class="view-more-btn" *ngIf="showVenueMoreButton" (click)="getAllVenues(1)">View More</button>
+          </div>
+
+        </div>
+       <div class="modal imagePopUp fade" id="searchVenue" tabindex="-1" role="dialog" aria-labelledby="eventModalTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <app-alert [alertType]="alertType" *ngIf="modalData.resMsg" [message]="modalData.resMsg"></app-alert>
+              <div class="modal-content">
+                <div class="card-modal-header">
+                  <div class="row card-header-row">
+                    <button type="button" style="float: left;" class="close1" data-dismiss="modal">&times;</button>
+
+                    <!-- categories -->
+                    <span *ngIf="modalData">
+                      <span *ngIf="modalData.categories && modalData.categories.length<4 && modalData.categories.length>0">
+                        <ng-template ngFor let-index="index" let-category [ngForOf]="modalData.categories">
+                          <span *ngIf="index<3" class="card-header-status">
+                            <label *ngIf="category.name != 'Unmarked Genres' && (category.name != 'Theatre-Performing Arts' && category.name !='Theater/Performing Arts')">{{category.name}}</label>
+                            <label *ngIf="category.name == 'Theatre-Performing Arts' || category.name =='Theater/Performing Arts'">Performing Arts</label>
+                            <label *ngIf="category.name == 'Unmarked Genres'">Unmarked</label>
+                          </span>
+                        </ng-template>
+                      </span>
+                      <span *ngIf="modalData.categories && modalData.categories.length>=4" class="card-header-status">
+                        <label>
+                          {{modalData.categories.length}} More Genres.
+                        </label>
+                      </span>
+                      <span class="card-header share">
+                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style" [attr.data-a2a-url]="modalData.url" [attr.data-a2a-title]="modalData.name">
+                          <a class="a2a_dd media-icons share" id="addtoany">
+                            <label><img src="../assets/images/share.svg"></label>
+                          </a>
+                        </div>
+                      </span>
+                      <span (click)="addFansCount('event',modalData._id)" class="card-header">
+                        <span *ngIf="modalData.total_fan_count>0">{{modalData.total_fan_count}}</span>
+                        <span ngClass="icon-fan"></span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="modal-card-body">
+                  <div class="card-body row">
+                    <img src='{{modalData.venueImageUrl}}'>
+                  </div>
+
+                  <div class="modal-card-info modal-state-add">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 no-padding">
+                      <div class="">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                          <p *ngIf="modalData.city" class="event-name venue-name">{{modalData.city}}
+                            <span *ngIf="modalData.state">,{{modalData.state}}</span>
+                          </p>
+                          <div class="event-name" *ngIf="modalData.name" [innerHTML]="modalData.name"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                          <p class="modal-time_place">
+                            <div *ngIf="modalData && modalData.social_media" class="card-footer social-icns-othr">
+                          <ng-template ngFor let-index="index" let-socialmedia [ngForOf]="modalData.social_media">
+                            <a *ngIf="socialmedia.media_type=='twitter' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons">
+                              <span ngClass="icon icon-twitter"></span>
+                            </a>
+                            <a *ngIf="socialmedia.media_type=='facebook' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons">
+                              <span ngClass="icon icon-facebook"></span>
+                            </a>
+                            <a *ngIf="socialmedia.media_type=='tumblr' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons">
+                              <span ngClass="icon icon-tumblr"></span>
+                            </a>
+                            <a *ngIf="socialmedia.media_type=='youtube' && socialmedia.url.length>0" target="_blank" href="{{socialmedia.url}}" class="media-icons divider">
+                              <span ngClass="icon icon-youtube"></span>
+                            </a>
+                          </ng-template>
+                        </div>                        
+                        </div>
+                      </div>
+
+                    <div class="">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                        <div class="photo_description no-padding pc_view"><span *ngIf="modalData.description">{{modalData.description}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
+                    <div class="col-md-12 no-padding mb-hide">
+                        <div class="btn-custom-padding"></div>
+                      <div class="btn-custom-padding">
+                      </div>
+                    </div>
+                    <div class="col-md-12 no-padding">
+                      <div class="btn-custom-padding">                    
+                      </div>
+                      <div class="btn-custom-padding">
+                      <button [routerLink]="['/venue/',modalData.url]" data-dismiss="modal" class="btn button--primary promote">More Info</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="clearfix"></div>
+
+      <!-- Locations result -->
+      <div *ngIf="showLocations && locationList.length>0" id="locationsWrapper">
+        <div *ngIf="locationTotalPages>0" class="heading">{{locationTotalPages}} Locations
+        </div>
+        <div class="card-row">
+          <ng-template ngFor let-city let-index="index" [ngForOf]="locationList">
+            <div class="item col-lg-3 col-md-3 col-xs-6 col-sm-3 custom-padding">
+              <app-location-card (click)="showAllEventsFromCity(city.key)" [city]="city"></app-location-card>
+            </div>
+          </ng-template>
+        <div class="extra-card-sec">
+          <button _ngcontent-c1="" class="view-more-btn" *ngIf="showLocationMoreButton" (click)="getAllLocations(1)">View More</button>
+        </div>
+
+        </div>
+        
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <!-- Map section -->
+    <div *ngIf="showMapView">
+      <div class="events-map-section">
+
+        <div class="col-lg-8 col-lg-push-4 col-xs-12 no-padding">
+          <div class="map-info-section">
+            <div class="col-lg-4 col-md-4 col-sm-5 col-xs-5 no-padding">
+              <li class="event-places">
+                <span ngClass="icon icon-location-line"></span>
+                <span>
+                  <input *ngIf="showMapAutocompleteInput" id="places" class="form-control search-box-text" places-auto-complete (initialized$)="initialized($event)"
+                    (place_changed)="placeChanged($event)" [types]="['geocode']" />
+                </span>
+                <span ngClass="glyphicon select-menu-down-arrow glyphicon-menu-down"></span>
+              </li>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7 row location-slider">
+              <div class="col-lg-1 col-md-1 col-sm-2 col-xs-1 no-padding">
+                <span class="meters">50m</span>
+              </div>
+              <div class="col-lg-11 col-md-11 col-sm-10 col-xs-11 no-padding map-range">
+                <div class="range-slider">
+                  <span class="range-value range-min__value">0</span>
+                  <input (click)="onRadiusChange()" step="5" class="range-slider__range" type="range" name="points" id="points" min="0" max="50"
+                    data-show-value="true" data-popup-enabled="true" [(ngModel)]="currentUser.search_location_range">
+                  <span class="range-value">50</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Map section -->        
+
+            <div class="abc">
+                
+              <ng2-map (mapReady$)="onMapReady($event)" id="mapg" [center]="currentUser.location" scrollwheel="true" [zoom]="zoom" [styles]="styles" [disableDefaultUI]="false" [zoomControl]="true">
+                <circle *ngIf="showCircle && radius" [strokeColor]="'#FF0000'" [strokeOpacity]="0.8" [strokeWeight]="2" [center]="currentUser.location"
+                  [editable]="false" [radius]="radius" draggable="false">
+                </circle>
+                
+
+                <marker (click)="clicked($event,center)" [position]="currentUser.location" [icon]="{
+                       url: 'https://d37efj3orb433s.cloudfront.net/website/assets/images/location_icon_b.png',
+                       anchor: [12,12],
+                       size: [24,24],
+                       scaledSize: [24,24]
+                     }">
+                  <info-window id="iw">
+                    [[markerData]]
+                  </info-window>
+                </marker>
+                <span *ngIf="markerList">
+                  <marker *ngFor="let pos of eventList" (click)="clicked($event,pos.mapData)" [position]="pos.location" [icon]="{
+                       url: 'https://d37efj3orb433s.cloudfront.net/website/assets/images/location_icon_r.png',
+                       anchor: [8,8],
+                       size: [16,16],
+                       scaledSize: [16,16]
+                     }" animation="{{pos.dispanimation}}" (initialized$)="onMarkerInit($event)"
+                     >
+                    <info-window id="iw1">
+                      [[markerData]]
+                    </info-window>
+                  </marker>
+                </span>
+              </ng2-map>
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 col-lg-pull-8 no-padding descktop-map-section">
+          <div class="mobile-page-tab">
+            <span class="page-tab">
+              <label>Events</label>
+            </span>
+            <span class="page-tab">
+              <label>Artist</label>
+            </span>
+            <span class="page-tab">
+              <label>Venue</label>
+            </span>
+          </div>
+
+          <ng-template ngFor let-event let-index="index" [ngForOf]="eventList">
+            <div *ngIf="event" class="row event-section desktop-cards-section" (mouseenter)="mouseHover(event._source)">
+              <a [routerLink]="['/event/',getCleanUrl(event._source.url,'0'),getCleanUrl(event._source.url,'1'),getCleanUrl(event._source.url,'2'), getCleanUrl(event._source.url,'3')]">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 image-section">
+                  <img [attr.src]="event.eventImageUrl" />
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-padding">
+                  <div *ngIf="event._source && event._source.categories">
+                    <div *ngIf="event._source.categories.length<4 && event._source.categories.length>0" class="event-info row">
+                      <ng-template ngFor let-index="index" let-category [ngForOf]="event._source.categories">
+                        <span *ngIf="index<3" class="card-header-status">
+                          <button>
+                            {{category.name}}
+                          </button>
+                        </span>
+                      </ng-template>
+                    </div>
+                    <span *ngIf="event._source.categories.length>=4" class="card-header-status">
+                      <div class="event-info row">
+                        <button>
+                          {{event._source.categories.length}} More Genres.
+                        </button>
+                      </div>
+                    </span>
+                  </div>
+                  <div class="event-info row">
+                    <label class="event-name">{{event._source.name}}</label>
+                  </div>
+                  <div class="date-place-section row">
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 event-time-icon">
+                      <span ngClass="icon icon-calendar"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-10 event-time-label">
+                      <label>{{event.eventStartTimeDate}}</label>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-2 event-time-icon">
+                      <span ngClass="icon icon-location"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-10 event-time-label">
+                      <label>{{event._source.venue.name}}</label>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </ng-template>
+
+          <div class="row event-section mobile-cards-section">
+            <ng-template ngFor let-event let-index="index" [ngForOf]="eventList">
+              <div class="item col-lg-3 col-md-3 col-xs-6 col-sm-3 custom-padding">
+                <app-event-card [event]="event._source"></app-event-card>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="row event-mobile-section">
+        </div>
+
+        <div *ngIf="eventTotalPages>0" class="page-section row">
+          <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-padding prev-button">
+            <button class="nav-btn" [attr.hidden]="currentPageNo<=1?true:null" (click)="prevPage(pageList[0]-1, 'event')">
+              <span class="glyphicon glyphicon glyphicon-menu-left"></span>
+            </button>
+          </div>
+          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 page-numbers">
+            <ng-template ngFor let-i [ngForOf]="pageList">
+              <span *ngIf="currentPageNo==i">
+                <label class="page-no active-page">{{i}}</label>
+              </span>
+              <span *ngIf="currentPageNo!=i">
+                <label (click)="getPageData(i,'event')" class="page-no">{{i}}</label>
+              </span>
+            </ng-template>
+          </div>
+          <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-padding next-button">
+            <button class="nav-btn" [attr.hidden]="totalPages==0 || pageList[paginationLimit-1]+1>totalPages?true:null" (click)="nextPage(pageList[paginationLimit-1]+1, 'event')">
+              <span class="glyphicon glyphicon glyphicon-menu-right"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loader">
+  <div class="small-loader"></div>
+</div>
+
+<div class="footer">
+  <app-footer></app-footer>
+</div>

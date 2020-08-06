@@ -1,0 +1,901 @@
+@import "../../styles.sass"
+
+/deep/ .layout2-header
+  border: 0
+  .right-section .navbar-header li a
+    color: #797979 !important
+/deep/ .layout2-header .right-section .navbar-header li span.icon
+  color: #797979 !important
+  
+.search-result
+  .search
+    /deep/ .search-box
+      width: 100%
+      margin: 0
+      bottom: 0
+      box-shadow: none
+      border: 1px solid #E1E1E1
+      /deep/ .search-box-dropdown
+        .temp
+          padding: 0
+
+  .sort-wrapper
+    margin: 0
+    // padding: 4% 4% 3% 5%
+    padding: 15px 0;
+    .search-result-text
+      font-size: 23px
+      font-weight: 300
+      letter-spacing: $spacing * 0.025
+
+    .search-location
+      font-size: $spacing * 1.15
+      font-weight: 200
+      color: $button-color
+
+    .highlight
+      font-weight: 500
+
+    .icon-location
+      font-size: $spacing * 0.85
+
+    .sort-section
+      @media screen and (max-width: 1000px) and (min-width: 767px)
+        padding: 0
+      .sort_dropdown
+        text-align: right
+        list-style: none
+        .sort-label
+          font-weight: 300
+          padding: 10px 20px
+          color: #737373
+          letter-spacing: 1px
+          position: relative
+          right: 10%
+          @media screen and (max-width: 376px) and (min-width: 320px)
+            font-size: 11px
+        .icon
+          float: left
+          position: absolute
+          top: 7px
+          left: 6px
+          z-index: 11
+          font-size: $spacing
+          font-weight: 600
+          cursor: pointer
+          pointer-events: none
+          color: $search-box--arrow-color
+
+        .select-menu-down-arrow
+          top: -2px
+          left: 20%
+          z-index: 11
+          font-size: $spacing * 0.6
+          color: #615f5f
+          @media screen and (min-width : 320px) and (max-width : 375px)
+            left: 32% !important
+          @media screen and (min-width : 375px) and (max-width : 767px)
+            left: 26%
+
+        .dropdown-arrow
+          left: 10%
+          @media screen and (max-width: 767px)
+            left: 14.5% !important
+          @media screen and (max-width: 1000px) and (min-width: 767px)
+            left: 23% !important
+
+        .grid
+          position: relative
+          left: 25%
+          @media screen and (min-width : 320px) and (max-width : 380px)
+            top: 5px
+            left: 37% !important
+          @media screen and (min-width : 375px) and (max-width : 767px)
+            top: 5px
+            left: 38%
+          @media screen and (min-width : 768px) and (max-width : 1000px)
+            left: 47%
+
+        .map
+          position: relative
+          left: 26%
+          @media screen and (min-width : 320px) and (max-width : 380px)
+            top: -25px
+            left: 38% !important
+          @media screen and (min-width : 375px) and (max-width : 767px)
+            top: 5px
+            left: 38%
+          @media screen and (min-width : 768px) and (max-width : 1000px)
+            left: 49%
+
+        .icon-grid-map
+          font-size: $spacing
+          color: #737373
+          cursor: pointer
+          opacity: 0.6
+          &:hover, &:focus, &:active
+            opacity: 1
+          .sort-label
+            float: left
+            padding: $spacing * 0.8 $spacing 0 0
+            @media screen and (min-width : 375px) and (max-width : 767px)
+              padding: 16px 6% 0 0
+              font-size: 11px
+          .select-menu-down-arrow
+            top: $spacing * 0.5
+            left: 77%
+        .sort-input
+          width: 26%
+          float: right
+          padding: $spacing * 0.1 0 0 $spacing * 0.20
+          border: 0
+          border: $spacing * 0.05 solid $search-box--border-color
+          box-shadow: none
+          position: relative
+          left: -16%
+          @media screen and (min-width : 320px) and (max-width : 767px)
+            left: -20%
+            width: 36% !important
+            padding: 2px 0 0 5px
+          &:hover
+            border-color: $select-box--hover-color
+          &:focus
+            border-color: $select-box--focus-color
+        @media screen and (max-width : $mobile--xlarge)
+          text-overflow: ellipsis
+          .sort-label
+            padding: 16px 10px 0 0
+            vertical-align: middle
+          .select-menu-down-arrow
+            top: 2px
+            font-size: 9px
+            left: 35.5%
+
+        .form-control
+          float: right
+          padding: 2px 0 0 4px
+          border: 0
+          border: 1px solid $search-box--border-color
+          box-shadow: none
+          width: 28%
+          @media screen and (max-width : 320px) and (min-width : 767px)
+            left: -26%
+            width: 33%
+            padding: 2px 0 0 5px
+
+
+        .nav-profile-dropdown-menu.dropdown-menu
+          min-width: 125px
+          left: 80px
+          top: 22px
+          z-index: 1000
+          border: none
+          border-radius: 0px
+          box-shadow: 0px 2px 1px 1px #ECECEC
+
+        .nav-profile-dropdown-menu
+          padding: 10px 0
+
+          .day-item
+            font-family: $font--open-sans
+            padding: 10px 20px
+            font-size: 15px
+            font-weight: 300
+            color: #A0A0A0
+            cursor: pointer
+
+          .day-item:hover
+            color: #000
+            background-color: #f2f2f4
+
+  .no-padding
+    padding: 0
+
+  .result-wrapper
+    padding: 1% 0
+    margin: 0
+    background-color: #fff
+    .custom-padding
+      padding: 0.5px 0.5px
+    .heading
+      font-size: $spacing * 1.4
+      line-height: $spacing * 1.7
+      font-family: $font--lora
+      color: #2A2E43
+      // padding: 3% 7% 2% 7%
+      padding: 0 15px 20px 15px;
+      .show-all-text
+        color: $button-color
+        font-family: $font--open-sans
+        font-size: 23px
+        padding: 0 15px
+
+    .result-card-section
+      margin: 0
+      text-align: center
+      padding: 0 0 3% 0
+      /deep/ .owl-carousel
+        padding: 0 !important
+      /deep/ .owl-carousel .owl-nav .owl-prev
+        position: absolute !important
+        top: 49% !important
+        background-color: #d6d6d6 !important
+        padding: 0.3% 0.6% 0.3% 0.6% !important
+        border-radius: 40px !important
+        .glyphicon
+          font-size: 11px !important
+      /deep/ .owl-carousel .owl-nav .owl-prev:active, /deep/ .owl-carousel .owl-nav .owl-next:active
+        transform: translateY(2px)
+
+      /deep/ .owl-carousel .owl-nav .owl-prev:hover, /deep/ .owl-carousel .owl-nav .owl-next:hover
+        background-color: #fff !important
+
+      /deep/ .owl-carousel .owl-nav .owl-next
+        position: absolute !important
+        top: 49% !important
+        background-color: #d6d6d6 !important
+        padding: 0.3% 0.6% 0.3% 0.6% !important
+        border-radius: 40px !important
+        .glyphicon
+          font-size: 11px !important
+
+      /deep/ .owl-carousel .owl-nav .owl-prev
+        left: 2% !important
+
+      /deep/ .owl-carousel .owl-nav .owl-next
+        right: 2% !important
+
+      .custom-padding
+        padding: 0 0.15% 0 0
+
+  .footer
+    background-image: url($image-url+"pattern_footer_left.png") , url($image-url+"pattern_right_1.png")
+    background-repeat: no-repeat
+    background-size: 100%
+
+// Media Queries
+@media screen and (min-width : 980px) and (max-width : 1280px)
+  .search-result
+    .sort-wrapper
+      padding: 15px 0
+
+      .sort-section .custom-input-group
+        width: 33%
+
+      .search-result-text
+        width: 100%
+
+@media screen and (min-width : 767px) and (max-width : 1000px)
+  .search-result
+    .sort-wrapper
+      //padding: 4% 4% 3% 4%
+      padding: 15px 0
+
+      .sort-section .sort_dropdown
+        .form-control
+          left: -15% !important
+          width: 39% !important
+        .select-menu-down-arrow
+          left: 35%
+
+      .search-result-text
+        width: 100%
+
+@media screen and (min-width : 320px) and (max-width : 767px)
+  .search-result
+    .sort-wrapper
+      //padding: 4% 2% 4.2% 2%
+      padding: 15px 0
+      .search-result-text
+        font-size: 18px
+      .search-location
+        font-size: 18px
+
+    .sort-section
+      line-height: 0
+      padding: 0
+
+.search-location,.show-all-text
+  cursor: pointer
+  &:hover
+    color: #ca000c !important
+
+.page-section
+  margin: 2% auto
+  width: 25%
+  text-align: center
+  clear: both
+  padding: 2% 0px
+  @media screen and (min-width : 320px) and (max-width : 767px)
+    width: 80%
+    padding: 9% 0
+  .page-numbers
+    padding: 2.1% 0
+  .page-no
+    cursor: pointer
+    width: 8%
+    font-family: $font--open-sans
+    font-weight: 100
+    color: #717379
+    &:hover
+      color: #000
+      font-weight: 600
+  .page-no.active-page
+    cursor: default
+    color: #fe0000
+
+.nav-btn
+  cursor: pointer
+  opacity: 1
+  color: #212123
+  background: $primary--background-color
+  box-shadow: $spacing * 0.05 $spacing * 0.25 $spacing * 0.55 0 #c1bdbd
+  border-radius: 50%
+  height: $spacing * 1.5
+  width: $spacing * 1.5
+  font-size: $spacing * 0.6
+  border: 0
+  outline: none
+  &:active
+    box-shadow: 0 $spacing * 0.2 #ccc
+    transform: translateY($spacing * 0.15)
+  .glyphicon
+    top: $spacing * 0.2
+    font-size: $spacing * 0.5
+
+/deep/ .modal-content
+  background-repeat: no-repeat
+  background-size: 100% 100%
+  background-position: center
+/deep/ .modal.in .modal-dialog
+  width: 80%
+  margin: 0 auto
+  @media screen and (max-width: $mobile--xlarge)
+    width: 88%
+    margin: 0 auto
+/deep/ .modal-header
+  border: 0
+  padding: 3% 1.5%
+  .close
+    display: none
+/deep/ .modal-footer
+  border: 0
+  padding: 0
+
+.modal-info-bg
+  background-color: rgba(0, 0, 0, 0.5)
+.card-modal-header
+  .card-header-row
+    text-align: left
+    padding: 0 2%
+    .card-header-status
+      margin: 0 1% 0 0
+      vertical-align: super
+      border: $spacing * 0.05 solid rgba(10, 10, 10, 0.06)
+      label
+        padding: 0 0.5% 0.5% 0.5%
+        //background-color: rgba(0, 0, 0, 0.23)
+        //background: rgba(10, 10, 10, 0.53)
+        border-radius: $spacing * 0.25
+        color: #fff
+        font-size: $spacing * 0.575
+        margin: 0
+        font-weight: 100
+        letter-spacing: $spacing * 0.0565
+    .card-header
+      text-align: center
+      color: $primary--background-color
+      background-color: rgba(0, 0, 0, 0.23)
+      font-family: $font--open-sans
+      font-size: $spacing * 0.675
+      font-weight: 100
+      border: $spacing * 0.05 solid #FFFFFF
+      width: $spacing * 2.25
+      padding: 1.2px 0
+      border-radius: $spacing * 0.25
+      background: rgba(55, 55, 54, 0.53)
+      float: right
+      .icon-fan
+        padding: 0 0 0 $spacing * 0.3
+        vertical-align: middle
+        font-size: $spacing * 0.65
+
+    .share
+      padding: 0.2% 0.5% 0.2% 0
+      margin: 0 0 0 $spacing * 0.3
+      font-family: $font--open-sans
+      color: #fff
+      font-size: $spacing * 0.6
+      font-weight: 100
+      margin-left: 5px
+      @media screen and (min-width : 320px) and (max-width: 767px)
+        padding: 0.4% 0 0 0
+        margin: 0
+        width: $spacing * 2
+        font-size: $spacing * 0.55
+
+    .fan
+      @media screen and (min-width : 320px) and (max-width: 767px)
+        font-size: 10px
+        width: 30px
+
+
+.no-padding
+  padding: 0
+
+.modal-card-body
+  .card-footer
+    margin: 0
+    padding: 0 2%
+    a
+      color: #fff
+  .btn-custom-padding
+    padding: 0 1%
+    @media screen and (min-width: 320px) and (max-width: 767px)
+      text-align: center
+    .button--primary
+      width: 90%
+      padding: $spacing * 0.35 $spacing * 0.25
+      @media screen and (min-width: 320px) and (max-width: 767px)
+        width: 80%
+        padding: 4px 5px
+      @media screen and (max-width: 1000px) and (min-width: 768px)
+        font-size: $spacing * 0.55
+
+    .promote
+      @media screen and (min-width: 768px) and (max-width : 900px)
+        font-size: $spacing * 0.5
+
+
+  .card-body
+    margin: 0
+    padding: 40% 0 0 0
+    @media screen and (min-width: 1200px) and (max-width : 1366px)
+      padding: 50% 0 0 0
+    @media screen and (min-width: 1000px) and (max-width : 1200px)
+      padding: 55% 0 0 0
+    @media screen and (min-width: 767px) and (max-width : 1000px)
+      padding: 60% 0 0 0
+
+  .modal-card-info
+    background-color: rgba(0, 0, 0, 0.4)
+    margin: 0
+    padding: $spacing * 0.2 $spacing * 0.5
+    height: $spacing * 2.25
+    @media screen and (min-width: 320px) and (max-width : 767px)
+      position: absolute
+      background-color: #000
+      top: 100%
+      width: 100%
+      height: auto
+    .event-name
+      float: left
+      font-family: $font--lora
+      color: #e8e2e2
+      font-weight: 100
+      letter-spacing: $spacing * 0.05
+      font-size: $spacing * 0.85
+      margin: 0
+      text-overflow: ellipsis
+      overflow: hidden
+      width: 100%
+      white-space: nowrap
+      text-align: left
+      @media screen and (min-width: 320px) and (max-width : 767px)
+        background-color: #000
+        font-size: 15px
+    .modal-card-text
+      text-align: left
+      color: $card--comment-color
+      height: $spacing
+      overflow: hidden
+      font-family: $font--open-sans
+      font-size: $spacing * 0.65
+      font-weight: 200
+      letter-spacing: 0.5px
+      width: 100%
+      margin: 0
+      text-overflow: ellipsis
+      @media screen and (min-width: 320px) and (max-width : 767px)
+        font-size: $spacing * 0.6
+
+    .modal-more-info
+      float: left
+      color: #EE4B55
+  .modal-time_place
+    color: #f1f1f1
+    text-align: left
+    padding: 0 0 0 10%
+    margin: 0
+    .time-text
+      font-weight: 100
+      font-family: $font--open-sans
+      font-size: $spacing * 0.55
+      letter-spacing: 0.5px
+      max-width: 50%
+      white-space: nowrap
+      display: inline-block
+      text-overflow: ellipsis
+      overflow: hidden
+      @media screen and (min-width : 320px) and (max-width: 767px)
+        font-size: $spacing * 0.5
+
+    .add-link
+      color: #EE4B55
+      padding: 0 3%
+      font-weight: 200
+      letter-spacing: 0.2px
+      @media screen and (min-width : 767px) and (max-width: 900px)
+        font-size: $spacing * 0.6
+        padding: 0
+
+  .get-ticket
+    width: 100%
+    border-radius: $spacing * 0.15
+    border: $spacing * 0.05 solid #EE4B55
+  .promote
+    width: 100%
+    background: transparent
+    border: $spacing * 0.05 solid $primary--background-color
+    border-radius: $spacing * 0.15
+
+  @media screen and (max-width: 767px) and (min-width : 320px)
+    .modal-time_place
+      padding: 0.5% 0 0 0
+
+  @media screen and (min-width: 768px) and (max-width : 1000px)
+    .col-sm-6
+      padding: 0 1%
+    .get-ticket
+      padding: 11% 0
+      font-size: 11px
+    .promote
+      padding: 11% 0
+      font-size: 13px
+
+  @media screen and (min-width: 1000px) and (max-width : 1366px)
+    .get-ticket, .promote
+      padding: 3% 2%
+
+.view-more-btn
+  font-size: $spacing * 0.75
+  padding: $spacing * 0.75 $spacing * 1.5
+  outline: none
+  margin: 1.5% 0
+  letter-spacing: 1.6px
+  font-family: $font--open-sans
+  font-weight: 600
+  color: #998F8B
+  background-color: transparent
+  border: $spacing * 0.05 solid #D2D2D2
+  @media screen and (max-width : 767px)
+    font-size: 13px
+    padding: 6px 15px
+    margin: 5.5% 0 0 0
+    font-weight: 500
+
+.extra-card-sec
+  text-align: center
+
+////
+.events-map-section
+  @media screen and (max-width: 767px) and (min-width: 320px)
+    top: -185px
+    /deep/ app-map
+      top: 0
+
+  .mobile-page-tab
+    display: none
+    position: relative
+    top: -25px
+    height: 25px
+    .page-tab
+      padding: 0 0 0 6%
+      font-size: 17px
+      font-weight: 400
+      opacity: 0.65
+      font-family: "Open Sans", sans-serif
+      line-height: 17px
+      label:hover
+        border-bottom: 2px solid $button-color
+        color: $button-color
+
+  .event-section
+    margin: 0 0 25px 0
+    a
+      color: #000
+    &:hover
+      background-color: #f7f7f7
+    .image-section
+      text-align: center
+      padding: 0
+      img
+        width: $spacing * 3.85
+        height: $spacing * 3.85
+
+    .event-info
+      padding: 0 $spacing * 0.15 $spacing * 0.2 0
+      margin: 0 1% 0 0
+      border-radius: $spacing * 0.25
+      vertical-align: super
+      float: left
+      width: 100%
+      button
+        border: 1px solid rgb(185, 180, 180)
+        border-radius: 4px
+        font-size: 10px
+        margin: 0
+        font-weight: 500
+        letter-spacing: 0.7px
+        background: none
+      .event-name
+        position: relative
+        font-family: "Lora", serif
+        font-weight: 100
+        letter-spacing: 1px
+        font-size: 14px
+        padding: 1% 0 0 0
+        width: 93%
+        margin: 0 auto
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+    .date-place-section
+      margin: 0 -5px
+      width: 100%
+      .event-time-icon
+        padding: 0
+        vertical-align: middle
+        text-align: center
+        .icon-location
+          font-size: $spacing * 0.85
+          vertical-align: super
+          color: $button-color
+      .event-time-label
+        padding: 0
+        font-size: $spacing * 0.65
+        font-weight: 100
+        opacity: 0.65
+        font-family: $font--open-sans
+        line-height: 17px
+
+  .mobile-cards-section
+    display: none
+
+  .map-info-section
+    .event-places
+      list-style: none
+      .search-box-text
+        padding: 0 11%
+        border: 0
+        box-shadow: none
+      .icon
+        float: left
+        position: absolute
+        top: 7px
+        left: 6px
+        z-index: 11
+        font-size: $spacing
+        font-weight: 600
+        cursor: pointer
+        pointer-events: none
+        color: $button-color
+
+      .select-menu-down-arrow
+        top: -26px
+        left: 85%
+        z-index: 11
+        font-size: $spacing * 0.6
+        color: $search-box--arrow-color
+        @media screen and (min-width : 320px) and (max-width : 767px)
+          top: -76px
+
+      @media screen and (max-width : $mobile--xlarge)
+        padding: 0 0 0 10px
+        text-overflow: ellipsis
+
+      .nav-profile-dropdown-menu.dropdown-menu
+        width: 160px
+        left: 0
+        margin: 20px 0 0 0
+        z-index: 1000
+        border: none
+        border-radius: 0px
+        box-shadow: 0px 2px 1px 1px #ECECEC
+
+      .nav-profile-dropdown-menu
+        padding: 10px 0
+
+        .event-item
+          font-family: "Open Sans"
+          padding: 10px 20px
+          font-size: 15px
+          font-weight: 300
+          color: #A0A0A0
+          cursor: pointer
+
+        .calendar-item:hover
+          color: #000
+          background-color: #f2f2f4
+
+    .location-slider
+      margin: 0
+      padding: 10px 0
+      .meters
+        font-weight: 400
+        letter-spacing: 1.1px
+      .range-min-value
+        float: left
+        padding: 0 10px 0 0
+        color: #939da1
+
+      .range-slider__range
+        width: 80%
+        float: left
+        -webkit-appearance: none
+
+      input[type=range]
+        -webkit-appearance: none
+        background-color: red
+        height: 2px
+        margin: 9px 0
+        outline: none
+        width: 87%
+        @media screen and (min-width : 320px) and (max-width : 375px)
+          width: 75%
+
+      .range-slider__range::-webkit-slider-thumb
+        appearance: none
+        width: 15px
+        height: 15px
+        border-radius: 50%
+        background: $button-color
+        cursor: pointer
+
+      .range-value, .range-value
+         padding: 0 5px
+         color: #939da1
+
+      .range-min__value
+        float: left
+
+      .map-range
+        padding: 0 10px
+
+    .map-expand
+      padding: 10px 0
+      text-align: center
+      .expand-label
+        color: #939da1
+        font-weight: 300
+        font-size: 12px
+        letter-spacing: 0.7px
+        font-family: $font--open-sans
+      .icon-expand
+        opacity: 0.8
+        padding: 0 5px
+        position: relative
+        top: 3px
+
+@media screen and (min-width : 1100px) and (max-width : 1366px)
+  .events-map-section
+    .event-section
+      .date-place-section
+        width: 90%
+      .image-section
+        padding: 0 2%
+
+    .map-info-section .event-places .icon
+      left: -4px
+      font-size: 14px
+      top: 9px
+
+@media screen and (min-width : 767px) and (max-width : 1100px)
+  .events-map-section
+    .event-section
+      .event-info
+        padding: 0 11%
+      .date-place-section
+        margin: 0 20px
+        width: 90%
+        .col-sm-1
+          font-size: 12px
+        .col-sm-5
+          font-size: 12px
+          padding: 0 7px
+
+    .map-info-section
+      .event-places .icon
+        left: -4px
+        font-size: 14px
+        top: 9px
+      .location-slider input[type=range]
+        width: 80%
+
+@media screen and (min-width : 320px) and (max-width : 767px)
+  .events-map-section
+    .mobile-page-tab
+      display: block
+      position: relative
+      top: -25px
+    .col-sm-4, .col-lg-4
+      position: relative
+      top: 55px
+      bottom: 0
+
+    .map-info-section
+      position: relative
+      border: 1px solid $select-box
+      height: 40px
+      .event-places
+        .icon
+          left: -2px
+          top: -42px
+        .search-box-text
+          padding: 0 21%
+          position: relative
+          top: -55px
+
+
+  /deep/ app-map
+    position: relative
+    top: -220px
+
+  /deep/ default-app-event-card
+    position: relative
+    top: -440px
+
+  .desktop-cards-section
+    display: none
+  .descktop-map-section
+    max-height: none
+  .events-map-section .mobile-cards-section
+    display: block
+
+  .explore-event .footer
+    margin: 30% 0 0 0
+
+.descktop-map-section
+  max-height: 67.5vh
+  overflow: auto
+  @media screen and (min-width : 320px) and (max-width : 767px)
+    max-height: none
+    overflow: initial
+
+/deep/ .a2a_default_style .a2a_img_text
+  display: none
+  label
+    font-family: "Open Sans",sans-serif
+    color: #fff
+    font-size: 12px
+    font-weight: 100
+    padding: 3px 0
+
+
+.close-add-to-cal-options
+    float: right;
+    margin-top: -21px;
+    margin-right: -15px;
+
+#searchEvent 
+  .modal-content
+    border: none
+  .modal-dialog
+    border: none
+
+
+#searchArtist 
+  .modal-content
+    border: none
+  .modal-dialog
+    border: none
+
+
+#searchVenue 
+  .modal-content
+    border: none
+  .modal-dialog
+    border: none
+
+
+@import "../../assets/styles/elements/modal.sass"
